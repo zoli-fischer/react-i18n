@@ -92,17 +92,19 @@ window.i18n = (function () {
     };
 
     self.words = function (words, callback, obj) {
-        var splitWords = words.split('/');
-        if (splitWords.length === 2) {
-            var collection_name = splitWords[0];
-            var index = splitWords[1];
+        if ( typeof words !== 'undefined' ) {
+            var splitWords = words.split('/');
+            if (splitWords.length === 2) {
+                var collection_name = splitWords[0];
+                var index = splitWords[1];
 
-            if ( self.languages === null ) {                
-                self.callback(words, callback, obj);
-            } else if (typeof self.language.collections[collection_name] === 'undefined' || typeof self.language.collections[collection_name].loaded === 'undefined' || self.language.collections[collection_name].loaded === false) {
-                self.loadCollection(collection_name, words, callback, obj);
-            } else {
-                callback.call(obj, self.language.collections[collection_name].data[index]);
+                if ( self.languages === null ) {                
+                    self.callback(words, callback, obj);
+                } else if (typeof self.language.collections[collection_name] === 'undefined' || typeof self.language.collections[collection_name].loaded === 'undefined' || self.language.collections[collection_name].loaded === false) {
+                    self.loadCollection(collection_name, words, callback, obj);
+                } else {
+                    callback.call(obj, self.language.collections[collection_name].data[index]);
+                }
             }
         }
     };
@@ -126,61 +128,17 @@ window.i18n = (function () {
         };
     };
 
-    /*
-    self.switch = function (language) {
-        $.cookie("i18n", language);
-        window.location.reload();
+    // Editing
+    var editing = false;
+
+    self.setEditing = function(value) {
+        editing = value;
+        console.log(editing);
     };
-
-    self.loadCollection = function (collection_name, language_index, async, callback) {
-        async = typeof async === 'undefined' ? true : async;
-        console.log(collection_name);
-        if (typeof self.language.collections[collection_name] === 'undefined' ||
-            typeof self.language.collections[collection_name].loaded !== 'udefined' ||
-            (!async && self.language.collections[collection_name].loaded === false)) {
-            language = typeof language_index === 'undefined' || self.getLanguage(language_index) ? self.language : self.getLanguage(language_index);
-            self.language.collections[collection_name] = jQuery.extend({
-                mtime: (new Date()),
-                loaded: false,
-                data: []
-            }, self.language.collections[collection_name]);
-            $.ajax({
-                url: "assets/i18n/" + language.index + "/" + collection_name + ".json?" + self.language.collections[collection_name].mtime,
-                async: typeof async === 'undefined' ? true : async
-            }).done(function (data) {
-                self.language.collections[collection_name].loaded = true;
-                self.language.collections[collection_name].data = data;
-                console.log(self.language.collections[collection_name].data);
-
-                if (typeof callback === 'function')
-                    callback(self.language.collections[collection_name].data);
-
-            }).fail(function (jqXHR, textStatus) {
-                console.log("Request failed: " + textStatus);
-            });
-        };
+    
+    self.isEditing = function() {
+        return editing;
     };
-
-    self._ = function (words, language) {
-        var collection = '';
-        words = words.split('/');
-        if (words.length == 2) {
-            collection_name = words[0];
-            index = words[1];
-            if (typeof self.language.collections[collection_name] === 'undefined' || typeof self.language.collections[collection_name].loaded === 'undefined' || self.language.collections[collection_name].loaded === false)
-                self.loadCollection(collection_name, language, false);
-
-            if (typeof self.language.collections[collection_name].data[index] !== 'undefined')
-                return self.language.collections[collection_name].data[index];
-        }
-        console.log(words + ' not found');
-        return false;
-    };
-
-    self._f = function (words, language) {
-        return function () { return self._(words, language); };
-    };
-    */
 
     return self;
 })();

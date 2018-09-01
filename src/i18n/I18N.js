@@ -10,7 +10,7 @@ class I18N extends Component {
         };
     }
     
-    callback(data) {        
+    callback(data) {
         this.setState({ translation: data });
     }
 
