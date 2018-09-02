@@ -5,8 +5,11 @@ import './I18N.css';
 class I18N extends Component {
     constructor(props) {
         super(props);
+        
+        let cIndexData = window.i18n.cIndexData( this.props.index );
         this.state = {
-            translation: this.props.html ? '&nbsp;' : ' ',
+            translation: cIndexData.index.trim().length > 0 ? cIndexData.index.trim() : ( this.props.html ? '&nbsp;' : ' ' ),
+            translated: false,
             editingMode: false,
             editing: false,
             toolbar: {
@@ -42,7 +45,7 @@ class I18N extends Component {
 
     callback(data) {
         console.log('i18n tranlated: ' + this.props.index + ' - ' + data.translation);
-        this.setState({ translation: data.translation });
+        this.setState({ translation: data.translation, translated: true });
     }
 
     componentDidMount() {
@@ -94,6 +97,7 @@ class I18N extends Component {
     onSaveToolClick(event) {
         if ( this.props.html ) {
             window.i18n.updateIndex(this.props.index, this.getInnterHTML());
+            this.setState({ translated: true });
             this.cancelEditing(false);
         }
     }
@@ -116,7 +120,7 @@ class I18N extends Component {
         }
         props.onClick = this.onClick;
         props.onContextMenu = this.onContextMenu;
-        props.className = props.className + ' ' + (this.state.editingMode ? 'I18N editingMode ' + (this.state.editing ? 'editing' : '') : 'I18N');
+        props.className = (typeof props.className !== undefined ? props.className : '') + ' I18N ' + (this.state.editingMode ? ' editingMode ' : '') + (this.state.editing ? ' editing ' : '') + (!this.state.translated ? ' no-translation ' : '');
         props.onMouseEnter = this.onMouseEnter;
         props.onMouseLeave = this.onMouseLeave;
 

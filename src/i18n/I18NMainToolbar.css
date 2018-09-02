@@ -1,17 +1,28 @@
 .I18NMainToolbar {
     position: fixed;
+    z-index: 1000000;
+    font-family: sans-serif;
+}
+
+.I18NMainToolbar * {
+    outline: none;
+}
+
+.I18NToolbar {
+    z-index: 1000001;
+    position: absolute;
     top: 0px;
     left: 0px;
     display: block;
     background: #000000;
     color: #ffffff;
-    z-index: 10000;
     font-size: 0px;
     border-bottom-right-radius: 5px;
     box-shadow: -1px 1px 3px #888888;
+    white-space: nowrap;
 }
 
-.I18NMainToolbar > a {
+.I18NToolbar > a {
     display: inline-block;
     font-size: 14px;
     font-family: sans-serif;
@@ -20,16 +31,89 @@
     color: inherit;
 }
 
-.I18NMainToolbar > a:first-child {
+.I18NToolbar > a:first-child {
     border-bottom-right-radius: 5px;
 }
 
-.I18NMainToolbar > a:hover {
+.I18NToolbar > a:hover {
     text-decoration: none;
     color: inherit;
 }
 
-.I18NMainToolbar.editing {
+.I18NMainToolbar.editing .I18NToolbar {
     background: #cccccc;
     color: #000000;
+}
+
+.I18NEditDialog {
+    z-index: 1000000;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.I18NEditDialog.visible {
+    display: block;
+}
+
+.I18NEditDialog > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: #ffffff;
+    width: 640px;
+    max-width: 100%;
+    padding: 30px 50px;
+    border: 1px solid #888888;
+    box-shadow: -1px 1px 6px #888888;
+    border-radius: 5px;
+}
+
+.I18NEditDialog > div > label {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-bottom: 10px;
+}
+
+.I18NEditDialog > div > input {
+    display: block;
+    width: 100%;
+    border: 1px solid #888888;
+    font-size: 14px;
+    height: 30px;
+    line-height: 1;
+    font-family: inherit;
+    padding: 0 5px;
+    margin-bottom: 20px;
+}
+
+.I18NEditDialog > div > div {
+    font-size: 0px;
+    text-align: center;
+}
+
+.I18NEditDialog > div > div > button {
+    display: inline-block;
+    font-size: 14px;
+    background: #dddddd;
+    color: #000000;
+    border: 0px;
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 5px 10px;
+}
+
+.I18NEditDialog > div > div > button.submit {
+    background: #00ff00;
+}
+
+.I18NMainToolbar:not(.editing) .I18NEditDialog {
+    display: none;
 }

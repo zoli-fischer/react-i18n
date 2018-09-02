@@ -1,5 +1,7 @@
 <?php
 
+die();
+
 $collections = [
     "home" => [
         "en" => [

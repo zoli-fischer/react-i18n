@@ -12,7 +12,11 @@
 }
 
 .I18N.editingMode.editing {
-    box-shadow:inset 0px 0px 0px 1px #ff0000;
+    box-shadow:inset 0px 0px 0px 2px #0000ff;
+}
+
+.I18N.editingMode.no-translation {
+    box-shadow:inset 0px 0px 0px 2px #ff0000;
 }
 
 .I18N > .I18NToolbar {

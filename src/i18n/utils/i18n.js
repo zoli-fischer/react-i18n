@@ -44,6 +44,11 @@ export function i18n() {
 
     self.languages = null;
     self.language = null;
+
+    self.switchLanguage = function (language) {
+        cookie.set("i18n", language, Infinity);
+        window.location.reload();
+    };
     
     var callbacks = [];
     self.addCallback = function (cIndex, resolve, reject) {
@@ -78,7 +83,8 @@ export function i18n() {
     }).then(function (response) {
         self.languages = response;
         self.language = self.getLanguage(cookie.get("i18n")) ? self.getLanguage(cookie.get("i18n")) : self.getDefaultLanguage();
-        cookie.set("i18n", self.language.index, Infinity);        
+        cookie.set("i18n", self.language.index, Infinity);
+        $eventHandler.trigger("languages-loaded", [self.languages]);
         runCallbacks();
     });
 
