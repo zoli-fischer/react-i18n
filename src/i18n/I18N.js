@@ -25,7 +25,7 @@ class I18N extends Component {
         this.handleEditingChange = this.handleEditingChange.bind(this);
         window.i18n.on('editing-change', this.handleEditingChange);
 
-        this.onContextMenu = this.onContextMenu.bind(this);
+        //this.onContextMenu = this.onContextMenu.bind(this);
         this.onClick = this.onClick.bind(this);
         this.onMouseEnter = this.onMouseEnter.bind(this);
         this.onMouseLeave = this.onMouseLeave.bind(this);
@@ -45,7 +45,11 @@ class I18N extends Component {
 
     callback(data) {
         console.log('i18n tranlated: ' + this.props.index + ' - ' + data.translation);
-        this.setState({ translation: data.translation, translated: true });
+        if (typeof data.translation === 'string')
+            this.setState({ 
+                translation: data.translation, 
+                translated: true 
+            });
     }
 
     componentDidMount() {
@@ -56,12 +60,14 @@ class I18N extends Component {
         return this.state.editingMode && this.state.editing;
     }
 
+    /*
     onContextMenu(event) {
         if (this.state.editingMode) {
             this.setState({ editing: true });
             event.preventDefault();
         }
     }
+    */
 
     onClick(event) {
         if (this.isEditing()) {
@@ -83,8 +89,18 @@ class I18N extends Component {
     }
 
     onEditToolClick(event) {
-        if ( this.state.editingMode )
-            this.setState({ editing: true });
+        if ( this.state.editingMode ) {
+            if (this.props.html) {
+                this.setState({ editing: true });
+            } else {
+                window.i18n.triggerEditDialog(this.props.index, this.state.translation, (translation) => {
+                    this.setState({
+                        translation: translation,
+                        translated: true
+                    });
+                });
+            }
+        }
         event.stopPropagation();
         event.nativeEvent.stopImmediatePropagation();
         event.preventDefault();
@@ -103,7 +119,8 @@ class I18N extends Component {
     }
 
     getInnterHTML(){
-        return ReactDOM.findDOMNode(this.refs.htmlcontent).innerHTML;
+        if (this.refs.htmlcontent)
+            return ReactDOM.findDOMNode(this.refs.htmlcontent).innerHTML;
     }
 
     cancelEditing(restoreInnterHTML){
@@ -119,7 +136,7 @@ class I18N extends Component {
                 props[i] = this.props[i];
         }
         props.onClick = this.onClick;
-        props.onContextMenu = this.onContextMenu;
+        //props.onContextMenu = this.onContextMenu;
         props.className = (typeof props.className !== undefined ? props.className : '') + ' I18N ' + (this.state.editingMode ? ' editingMode ' : '') + (this.state.editing ? ' editing ' : '') + (!this.state.translated ? ' no-translation ' : '');
         props.onMouseEnter = this.onMouseEnter;
         props.onMouseLeave = this.onMouseLeave;
@@ -145,9 +162,8 @@ class I18N extends Component {
                     <div ref="htmlcontent" contentEditable={this.isEditing()} dangerouslySetInnerHTML={{ __html: this.state.translation }}></div>
                 </div>
         } else {
-            return <div {...props}>
-                    {toolbar}
-                    <div>{this.state.translation}</div>
+            return <div {...props}>{toolbar}
+                <div className="I18NText">{this.state.translation}</div>
                 </div>
         }
     }

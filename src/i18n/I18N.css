@@ -67,3 +67,6 @@
     color: #000000;
 }
 
+.I18NText {
+    white-space: pre-line
+}

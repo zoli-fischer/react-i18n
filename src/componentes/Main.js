@@ -5,6 +5,7 @@ import About from './About';
 import Service from './Service';
 import Repair from './Repair';
 import Contact from './Contact';
+import PrivacyPolicy from './PrivacyPolicy';
 
 class Main extends Component {
   render() {
@@ -16,6 +17,7 @@ class Main extends Component {
                 <Route path='/service' component={Service} />
                 <Route path='/repair' component={Repair} />
                 <Route path='/contact' component={Contact} />
+                <Route path='/privacy-policy' component={PrivacyPolicy} />
             </Switch>
         </main>
     );

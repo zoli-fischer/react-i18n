@@ -82,7 +82,8 @@
     margin-bottom: 10px;
 }
 
-.I18NEditDialog > div > input {
+.I18NEditDialog > div > input,
+.I18NEditDialog > div > textarea {
     display: block;
     width: 100%;
     border: 1px solid #888888;
@@ -92,6 +93,13 @@
     font-family: inherit;
     padding: 0 5px;
     margin-bottom: 20px;
+}
+
+.I18NEditDialog > div > textarea {
+    resize: none;
+    height: 120px;
+    padding: 5px 5px;
+    line-height: 18px;
 }
 
 .I18NEditDialog > div > div {

@@ -7,3 +7,21 @@
     padding: 43px 0px 30px 0px;
     border-top: #f0f0f0 1px solid;
 }
+
+.Footer .copyright > a.active,
+.Footer .copyright > a:hover,
+.Footer .languages > a.active,
+.Footer .languages > a:hover {
+    color: #000000;
+}
+
+.Footer .languages > a::after {
+    content: '|';
+    padding-left: 10px;
+    padding-right: 10px;
+    color: #b0b0b0;
+}
+
+.Footer .languages > a:last-child::after {
+    content: '';
+}

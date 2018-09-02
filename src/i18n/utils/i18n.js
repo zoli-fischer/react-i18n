@@ -165,7 +165,7 @@ export function i18n() {
     };
 
     // Editing
-    var editing = true;
+    var editing = false;
 
     self.setEditing = function(value) {
         editing = value;
@@ -202,6 +202,12 @@ export function i18n() {
                 console.log(error);
             });
         }
+    };
+
+    self.triggerEditDialog = function (cIndex, tranlation, callback) {
+        var cIndexData = self.cIndexData(cIndex);
+        if (cIndexData)
+            $eventHandler.trigger("show-edit-dialog", [cIndex, tranlation, callback]);
     };
 
     //Events
