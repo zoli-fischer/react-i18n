@@ -24,7 +24,6 @@
     "less": "^3.8.1",
     "less-loader": "^4.1.0",
     "popper.js": "^1.14.4",
-    "webpack-bootstrap": "^0.1.5",
-    "ws": "3.3.2"
+    "webpack-bootstrap": "^0.1.5"
   }
 }

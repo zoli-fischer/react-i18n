@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Header.css';
 import { Route, Link } from 'react-router-dom';
+import I18N from './../i18n/I18N';
 
 class Header extends Component {
   render() {
@@ -14,11 +15,11 @@ class Header extends Component {
                     <div className="col-sm-4">
                         <nav className="Nav">
                             <ul>
-                                <NavItemLink to="/" activeOnlyWhenExact={true} label="Home" className="m1"></NavItemLink>
-                                <NavItemLink to="/about" label="About" className="m2"></NavItemLink>
-                                <NavItemLink to="/service" label="Services" className="m3"></NavItemLink>
-                                <NavItemLink to="/repair" label="Repair" className="m4"></NavItemLink>
-                                <NavItemLink to="/contact" label="Contact" className="m5"></NavItemLink>
+                                <NavItemLink to="/" activeOnlyWhenExact={true} label="menu/Home" className="m1"></NavItemLink>
+                                <NavItemLink to="/about" label="menu/About" className="m2"></NavItemLink>
+                                <NavItemLink to="/service" label="menu/Services" className="m3"></NavItemLink>
+                                <NavItemLink to="/repair" label="menu/Repair" className="m4"></NavItemLink>
+                                <NavItemLink to="/contact" label="menu/Contact" className="m5"></NavItemLink>
                             </ul>
                         </nav>
                     </div>
@@ -32,7 +33,7 @@ class Header extends Component {
 const NavItemLink = ({ label, to, activeOnlyWhenExact, className }) => (
     <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
         <li className={match ? 'active' : ''}>
-            <Link to={to} className={className}>{label}</Link>
+            <Link to={to} className={className}><I18N html i18nid={label}></I18N></Link>
         </li>
     )} />
 );

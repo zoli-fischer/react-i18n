@@ -1,5 +1,17 @@
-window.i18n = (function () {
-    var self = this;
+import $ from "jquery";
+
+export function i18n() {
+    var self = this,
+        jsonHost = 'http://localhost/i18n-json/',
+        $eventHandler = $('<div></div>');
+
+    self.setHost = function (value) {
+        jsonHost = value;
+    };
+
+    self.getHost = function () {
+        return jsonHost;
+    };
 
     var cookie = {
         get: function (sKey) {
@@ -34,16 +46,15 @@ window.i18n = (function () {
     self.language = null;
     
     var callbacks = [];
-    self.callback = function (words, callback, obj) {
-        if (typeof callback === 'function')
-            callbacks.push({
-                words: words,
-                callback: callback,
-                obj: obj
-            });
+    self.addCallback = function (cIndex, resolve, reject) {
+        callbacks.push({
+            cIndex: cIndex,
+            resolve: resolve, 
+            reject: reject
+        });
     };
 
-    self.runCallbacks = function () {
+    var runCallbacks = function () {
         var localCallbacks = [];
         var callback = callbacks.pop();
         if ( callback )
@@ -55,20 +66,20 @@ window.i18n = (function () {
 
         for ( var i in localCallbacks ) {
             if (typeof localCallbacks[i] !== 'undefined' )
-                self.words(localCallbacks[i].words, localCallbacks[i].callback, localCallbacks[i].obj);
+                self.callback(localCallbacks[i].cIndex, localCallbacks[i].resolve, localCallbacks[i].reject);
         }
         localCallbacks = [];
     }
 
     console.log(cookie.get("i18n"));
 
-    fetch("http://localhost/i18n-json/config.json?_="+(new Date())).then(function (response) {
+    fetch(jsonHost+"config.json?_="+(new Date())).then(function (response) {
         return response.json();
     }).then(function (response) {
         self.languages = response;
         self.language = self.getLanguage(cookie.get("i18n")) ? self.getLanguage(cookie.get("i18n")) : self.getDefaultLanguage();
         cookie.set("i18n", self.language.index, Infinity);        
-        self.runCallbacks();
+        runCallbacks();
     });
 
     self.getLanguage = function (language_index) {
@@ -91,38 +102,57 @@ window.i18n = (function () {
         return language;
     };
 
-    self.words = function (words, callback, obj) {
-        if ( typeof words !== 'undefined' ) {
-            var splitWords = words.split('/');
-            if (splitWords.length === 2) {
-                var collection_name = splitWords[0];
-                var index = splitWords[1];
-
-                if ( self.languages === null ) {                
-                    self.callback(words, callback, obj);
-                } else if (typeof self.language.collections[collection_name] === 'undefined' || typeof self.language.collections[collection_name].loaded === 'undefined' || self.language.collections[collection_name].loaded === false) {
-                    self.loadCollection(collection_name, words, callback, obj);
-                } else {
-                    callback.call(obj, self.language.collections[collection_name].data[index]);
+    self.cIndexData = function (cIndex) {
+        if (typeof cIndex !== 'undefined') {
+            var splitcIndex = cIndex.split('/');
+            if (splitcIndex.length === 2) {
+                return {
+                    collection: splitcIndex[0],
+                    index: splitcIndex[1]
                 }
+            }
+        }
+        return false;
+    };
+
+    self.callback = function (cIndex, resolve, reject) {
+        var cIndexData = self.cIndexData(cIndex);
+        if ( cIndexData ) {
+            if ( self.languages === null ) {
+                self.addCallback(cIndex, resolve, reject);
+            } else if (typeof self.language.collections[cIndexData.collection] === 'undefined' || typeof self.language.collections[cIndexData.collection].loaded === 'undefined' || self.language.collections[cIndexData.collection].loaded === false) {
+                self.loadCollection(cIndexData.collection, cIndex, resolve, reject);
+            } else {
+                resolve({
+                    translation: self.language.collections[cIndexData.collection].data[cIndexData.index],
+                    fullIndex: cIndex,
+                    index: cIndexData.index,
+                    collection: cIndexData.collection
+                });
             }
         }
     };
 
-    self.loadCollection = function (collection_name, words, callback, obj) {
-        self.callback(words, callback, obj);
-        if (typeof self.language.collections[collection_name] === 'undefined' || typeof self.language.collections[collection_name].loaded === 'undefined') {
-            if ( self.language.collections[collection_name].loaded !== false ) {                
+    self._ = function (cIndex) {
+        return new Promise(function (resolve, reject) {
+            self.callback(cIndex, resolve, reject);
+        });
+    };
+
+    self.loadCollection = function (collection_name, cIndex, resolve, reject) {
+        self.addCallback(cIndex, resolve, reject);
+        if (typeof self.language.collections[collection_name] !== 'undefined' && typeof self.language.collections[collection_name].loaded === 'undefined') {
+            if ( self.language.collections[collection_name].loaded !== false ) {
                 
                 self.language.collections[collection_name].loaded = false;
                 self.language.collections[collection_name].data = [];
 
-                fetch("http://localhost/i18n-json/" + self.language.index + "/" + collection_name + ".json?_=" + self.language.collections[collection_name].mtime).then(function(response) {
+                fetch(jsonHost + self.language.index + "/" + collection_name + ".json?_=" + self.language.collections[collection_name].mtime).then(function(response) {
                     return response.json();
                 }).then(function(response) {
                     self.language.collections[collection_name].loaded = true;
                     self.language.collections[collection_name].data = response;
-                    self.runCallbacks();
+                    runCallbacks();
                 });
             }
         };
@@ -134,11 +164,23 @@ window.i18n = (function () {
     self.setEditing = function(value) {
         editing = value;
         console.log(editing);
+        $eventHandler.trigger("editing-change",[editing]);
     };
     
     self.isEditing = function() {
         return editing;
     };
 
+    //Events
+    self.on = function() {
+        return $eventHandler.on.apply($eventHandler, arguments);
+    };
+
+    self.off = function () {
+        return $eventHandler.off.apply($eventHandler, arguments);
+    };
+
     return self;
-})();
+};
+
+export default i18n;

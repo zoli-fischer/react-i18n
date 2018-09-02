@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import I18N from './../i18n/I18N';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
   render() {
     return (
       <div className="container">

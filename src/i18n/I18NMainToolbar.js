@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import './I18NMainToolbar.css';
-// eslint-disable-next-line
-import * as i18n from './../utils/i18n.js';
 
 class I18NMainToolbar extends Component { 
     constructor(props) {
@@ -11,21 +9,25 @@ class I18NMainToolbar extends Component {
         };
 
         this.handleClick = this.handleClick.bind(this);
+        this.handleEditingChange = this.handleEditingChange.bind(this);
+
+        window.i18n.on('editing-change', this.handleEditingChange);
     }
 
-    componentDidMount() {
-
+    handleEditingChange(event,value) {
+        this.setState({ editing: value });
     }
 
-    handleClick() {
+    handleClick(event) {
+        event.stopPropagation();
+        event.preventDefault();
         window.i18n.setEditing(!window.i18n.isEditing());
-        this.setState({ editing: window.i18n.isEditing() });
     }
 
     render() {
         return (
-            <div className="I18NMainToolbar">
-                <a href="javascript:{}" onClick={this.handleClick}>{this.state.editing ? "Enable i18n editing" : "Disable i18n editing"}</a>
+            <div className={'I18NMainToolbar' + (this.state.editing ? ' editing' : '' )}>
+                <a href="" onClick={this.handleClick}>{!this.state.editing ? "Enable i18n editing" : "Disable i18n editing"}</a>
             </div>
         );
     }

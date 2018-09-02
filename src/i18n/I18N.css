@@ -1,0 +1,12 @@
+.I18N {
+    display: inline-block;
+    outline: none;
+}
+
+.I18N.editingMode {
+    box-shadow:inset 0px 0px 0px 2px #00ff00;
+}
+
+.I18N.editingMode.editing {
+    box-shadow:inset 0px 0px 0px 1px #ff0000;
+}
