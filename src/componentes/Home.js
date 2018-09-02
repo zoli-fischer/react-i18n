@@ -13,7 +13,7 @@ class Home extends Component {
       <div className="container">
         <div className="row">
           <div className="col-md-8 offset-md-2 mt-5 mb-5">
-            <I18N html i18nid="home/top-text"></I18N>
+            <span><I18N html index="home/top-text"></I18N></span>            
           </div>
         </div>
         <div className="row">
@@ -31,12 +31,10 @@ const HomeBoxItem = ({ i18nid, to, src }) => {
     <div className="col-md-4">
       <a href={to}>
         <img src={src} alt="" />
-        <strong><I18N i18nid={i18nid}></I18N></strong>
+        <strong><I18N index={i18nid}></I18N></strong>
       </a>
     </div>
   )
 };
-
-
 
 export default Home;

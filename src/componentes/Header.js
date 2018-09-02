@@ -33,7 +33,7 @@ class Header extends Component {
 const NavItemLink = ({ label, to, activeOnlyWhenExact, className }) => (
     <Route path={to} exact={activeOnlyWhenExact} children={({ match }) => (
         <li className={match ? 'active' : ''}>
-            <Link to={to} className={className}><I18N html i18nid={label}></I18N></Link>
+            <Link to={to} className={className}><I18N index={label}></I18N></Link>
         </li>
     )} />
 );

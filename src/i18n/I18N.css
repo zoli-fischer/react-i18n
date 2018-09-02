@@ -1,5 +1,9 @@
 .I18N {
     display: inline-block;
+    position: relative;
+}
+
+.I18N * {
     outline: none;
 }
 
@@ -10,3 +14,52 @@
 .I18N.editingMode.editing {
     box-shadow:inset 0px 0px 0px 1px #ff0000;
 }
+
+.I18N > .I18NToolbar {
+    display: none;
+    position: absolute;
+    top: -20px;
+    left: 0px;
+    height: 20px;
+    background: #000000;
+    color: #ffffff;
+    font-size: 0px;
+    white-space: nowrap;
+    font-family: sans-serif
+}
+
+.I18N > .I18NToolbar > span {
+    font-size: 12px !important;
+    text-transform: none;
+    display: inline-block;
+    font-family: inherit;
+    color: inherit;
+    padding: 0 10px;
+    line-height: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-weight: normal
+}
+
+.I18N.editingMode > .I18NToolbar {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    user-select: none;
+}
+
+.I18N.editingMode > .I18NToolbar.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.I18N.editingMode > .I18NToolbar > span.cancel {
+    background: #cccccc;
+    color: #000000;
+}
+
+.I18N.editingMode > .I18NToolbar > span.submit {
+    background: #00ff00;
+    color: #000000;
+}
+
