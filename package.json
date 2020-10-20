@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bootstrap": "^4.1.3",
-    "node-less-chokidar": "^0.3.1",
-    "react": "^16.4.2",
-    "react-bootstrap": "^0.32.3",
-    "react-dom": "^16.4.2",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.5"
+    "bootstrap": "^4.5.3",
+    "node-less-chokidar": "^0.4.1",
+    "react": "^16.14.0",
+    "react-bootstrap": "^1.3.0",
+    "react-dom": "^16.14.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^3.4.3"
   },
   "scripts": {
     "build-css": "node-less-chokidar src/ -o src/",
@@ -20,10 +20,10 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "jquery": "^3.3.1",
-    "less": "^3.8.1",
-    "less-loader": "^4.1.0",
-    "popper.js": "^1.14.4",
+    "jquery": "^3.5.1",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2",
+    "popper.js": "^1.16.1",
     "webpack-bootstrap": "^0.1.5"
   }
 }
